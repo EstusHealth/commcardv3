@@ -533,6 +533,27 @@ body {
   background-color: var(--secondary);
 }
 
+.btn-copy {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.btn-copy:hover {
+  color: var(--primary);
+  background-color: var(--secondary);
+}
+
 /* Hide speak buttons when voice not available */
 .no-voice .btn-speak {
   display: none;
@@ -577,6 +598,32 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.5;
+}
+
+.fullscreen-copy-btn {
+  position: absolute;
+  bottom: 60px;
+  background-color: rgba(0, 0, 0, 0.12);
+  color: inherit;
+  border: 2px solid currentColor;
+  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.65;
+  transition: opacity var(--transition), background-color var(--transition);
+}
+
+.fullscreen-copy-btn:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* =============================================
