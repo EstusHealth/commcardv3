@@ -349,6 +349,7 @@
     if (previewArea) {
       previewArea.style.backgroundColor = state.builderColorLight;
       previewArea.style.borderLeft = `4px solid ${state.builderColor}`;
+      preview.style.color = state.builderColor;
     }
   };
 
@@ -592,6 +593,19 @@
       builderCopy.addEventListener('click', () => {
         const text = document.getElementById('builder-text')?.value?.trim();
         if (text) copyToClipboard(text, builderCopy);
+      });
+    }
+
+    // Builder show on screen
+    const builderShow = document.getElementById('builder-show');
+    if (builderShow) {
+      builderShow.addEventListener('click', () => {
+        const text = document.getElementById('builder-text')?.value?.trim();
+        if (!text) return;
+        showFullscreen(text, {
+          color: state.builderColor,
+          colorLight: state.builderColorLight
+        });
       });
     }
 

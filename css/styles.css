@@ -734,13 +734,13 @@ body {
 
 .builder-preview__text {
   font-family: var(--font-body);
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 600;
   text-align: center;
   color: var(--foreground);
   line-height: 1.45;
   font-style: italic;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .builder-preview__text:not(:empty) {
