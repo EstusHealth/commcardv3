@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free communication cards for neurodivergent adults. Tap to speak or show phrases when words are hard. No login, no data stored.">
+  <meta name="theme-color" content="#76543E">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CommCard | Words When You Have None">
+  <meta property="og:description" content="Free communication cards for when words are hard. A tool by Estus Health.">
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:url" content="https://estushealth.com/commcard">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CommCard | Words When You Have None">
+  <meta name="twitter:description" content="Free communication cards for when words are hard. A tool by Estus Health.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <title>CommCard | Words When You Have None</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Skip navigation -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ============================================
+       Top Bar
+       ============================================ -->
+  <header class="top-bar" role="banner">
+    <div class="top-bar__brand">
+      <span class="top-bar__title" aria-label="CommCard">CommCard</span>
+    </div>
+    <nav class="top-bar__actions" aria-label="App controls">
+      <button
+        class="icon-btn"
+        id="settings-btn"
+        aria-label="Open settings"
+        aria-haspopup="dialog"
+        aria-controls="settings-panel"
+      >
+        <span aria-hidden="true">⚙️</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ============================================
+       App Container
+       ============================================ -->
+  <div class="app-container">
+
+    <!-- Desktop Sidebar -->
+    <nav class="sidebar" aria-label="Categories">
+      <span class="sidebar__label">Categories</span>
+
+      <button class="sidebar__nav-item active" data-cat="right-now" aria-label="Right Now category">
+        <span class="cat-emoji" aria-hidden="true">⚡</span>
+        Right Now
+      </button>
+      <button class="sidebar__nav-item" data-cat="low-battery" aria-label="Low Battery category">
+        <span class="cat-emoji" aria-hidden="true">🔋</span>
+        Low Battery
+      </button>
+      <button class="sidebar__nav-item" data-cat="setting-the-scene" aria-label="Setting the Scene category">
+        <span class="cat-emoji" aria-hidden="true">🎯</span>
+        Setting the Scene
+      </button>
+      <button class="sidebar__nav-item" data-cat="out-in-the-world" aria-label="Out in the World category">
+        <span class="cat-emoji" aria-hidden="true">🌏</span>
+        Out in the World
+      </button>
+      <button class="sidebar__nav-item" data-cat="explaining-me" aria-label="Explaining Me category">
+        <span class="cat-emoji" aria-hidden="true">💬</span>
+        Explaining Me
+      </button>
+      <button class="sidebar__nav-item" data-cat="at-appointments" aria-label="At Appointments category">
+        <span class="cat-emoji" aria-hidden="true">🏥</span>
+        At Appointments
+      </button>
+
+      <hr class="sidebar__divider" aria-hidden="true">
+
+      <button class="sidebar__action" data-action="open-builder" aria-label="Open card builder">
+        <span aria-hidden="true">✏️</span>
+        Make Your Own Card
+      </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" tabindex="-1">
+
+      <!-- ============================================
+           Phrases View
+           ============================================ -->
+      <div id="page-phrases">
+
+        <!-- Mobile Category Tabs -->
+        <div
+          class="category-tabs"
+          role="tablist"
+          aria-label="Communication categories"
+        >
+          <button
+            class="cat-tab active"
+            role="tab"
+            aria-selected="true"
+            data-cat="right-now"
+          >
+            <span aria-hidden="true">⚡</span>
+            Right Now
+          </button>
+          <button
+            class="cat-tab"
+            role="tab"
+            aria-selected="false"
+            data-cat="low-battery"
+          >
+            <span aria-hidden="true">🔋</span>
+            Low Battery
+          </button>
+          <button
+            class="cat-tab"
+            role="tab"
+            aria-selected="false"
+            data-cat="setting-the-scene"
+          >
+            <span aria-hidden="true">🎯</span>
+            Setting the Scene
+          </button>
+          <button
+            class="cat-tab"
+            role="tab"
+            aria-selected="false"
+            data-cat="out-in-the-world"
+          >
+            <span aria-hidden="true">🌏</span>
+            Out in the World
+          </button>
+          <button
+            class="cat-tab"
+            role="tab"
+            aria-selected="false"
+            data-cat="explaining-me"
+          >
+            <span aria-hidden="true">💬</span>
+            Explaining Me
+          </button>
+          <button
+            class="cat-tab"
+            role="tab"
+            aria-selected="false"
+            data-cat="at-appointments"
+          >
+            <span aria-hidden="true">🏥</span>
+            At Appointments
+          </button>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header" id="section-header" aria-live="polite" aria-atomic="true">
+          <span class="section-header__emoji" aria-hidden="true">⚡</span>
+          <h1 class="section-header__title">Right Now</h1>
+          <div class="section-header__bar" style="width:40px;" aria-hidden="true"></div>
+        </div>
+
+        <!-- Phrase Grid -->
+        <div
+          class="phrase-grid"
+          id="phrase-grid"
+          role="list"
+          aria-label="Communication phrases"
+        >
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Make Your Own (mobile prompt) -->
+        <div class="make-own-bar">
+          <button class="make-own-btn" data-action="open-builder" aria-label="Open the card builder to create your own phrase card">
+            <span aria-hidden="true">✏️</span>
+            Make Your Own Card
+          </button>
+        </div>
+
+      </div><!-- end #page-phrases -->
+
+      <!-- ============================================
+           Card Builder View
+           ============================================ -->
+      <div id="page-builder">
+        <div class="section-header">
+          <span class="section-header__emoji" aria-hidden="true">✏️</span>
+          <h1 class="section-header__title">Make Your Own Card</h1>
+        </div>
+
+        <div class="builder-section active">
+          <div class="builder-card">
+
+            <!-- Back button -->
+            <div>
+              <button class="btn btn-secondary" id="builder-back" aria-label="Back to phrase library">
+                <span aria-hidden="true">←</span> Back to Phrases
+              </button>
+            </div>
+
+            <!-- Text input -->
+            <div>
+              <label for="builder-text">Your phrase</label>
+              <textarea
+                id="builder-text"
+                placeholder="Type your phrase here (up to 15 words works best)..."
+                maxlength="200"
+                aria-describedby="builder-text-hint"
+              ></textarea>
+              <span id="builder-text-hint" class="visually-hidden">
+                Type the phrase you want to speak or show. Shorter phrases work better. Maximum 200 characters.
+              </span>
+            </div>
+
+            <!-- Colour picker -->
+            <div>
+              <label>Card colour</label>
+              <div class="color-picker-row" id="builder-colors" role="group" aria-label="Choose card colour">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div>
+              <label>Preview</label>
+              <div
+                class="builder-preview"
+                id="builder-preview"
+                aria-label="Card preview"
+                role="img"
+              >
+                <p class="builder-preview__text" id="builder-preview-text" aria-live="polite">
+                  Your phrase will appear here...
+                </p>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="builder-actions">
+              <button class="btn btn-speak btn-primary" id="builder-speak" aria-label="Speak the custom phrase">
+                <span aria-hidden="true">🔊</span> Speak
+              </button>
+              <button class="btn btn-secondary" id="builder-download" aria-label="Download custom card as image">
+                <span aria-hidden="true">💾</span> Download Card
+              </button>
+            </div>
+
+          </div><!-- end .builder-card -->
+        </div><!-- end .builder-section -->
+      </div><!-- end #page-builder -->
+
+      <!-- ============================================
+           Footer
+           ============================================ -->
+      <footer class="footer" role="contentinfo">
+        <p class="footer__text">
+          A free tool by <a href="https://estushealth.com" class="footer__link" target="_blank" rel="noopener noreferrer">Estus Health</a>
+          | Neuroaffirming Occupational Therapy<br>
+          <small>
+            <a href="#privacy-note" class="footer__link">Privacy</a>
+            &nbsp;&middot;&nbsp;
+            <a href="mailto:performancelab@estushealth.com" class="footer__link">Suggest a phrase</a>
+          </small>
+        </p>
+        <p id="privacy-note" class="footer__text" style="margin-top:8px; font-size:0.75rem; opacity:0.7;">
+          CommCard does not collect, store, or transmit any personal data. Nothing you type or say through this tool is recorded, saved, or sent to any server. Your communication is yours alone.
+        </p>
+      </footer>
+
+    </main><!-- end .main-content -->
+  </div><!-- end .app-container -->
+
+  <!-- ============================================
+       Full-Screen Display Overlay
+       ============================================ -->
+  <div
+    id="fullscreen-overlay"
+    class="hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Fullscreen phrase display. Tap anywhere to dismiss."
+    tabindex="0"
+  >
+    <p id="fullscreen-overlay__text" aria-live="assertive"></p>
+    <span id="fullscreen-overlay__dismiss" aria-hidden="true">Tap anywhere to dismiss</span>
+  </div>
+
+  <!-- ============================================
+       Settings Panel
+       ============================================ -->
+  <div
+    id="settings-panel"
+    class="hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="settings-title"
+    aria-hidden="true"
+  >
+    <div class="settings-backdrop" tabindex="-1" aria-hidden="true"></div>
+    <div class="settings-drawer">
+
+      <div class="settings-header">
+        <h2 id="settings-title">Settings</h2>
+        <button class="icon-btn" id="settings-close" aria-label="Close settings" style="color: var(--foreground);">
+          <span aria-hidden="true">✕</span>
+        </button>
+      </div>
+
+      <div class="settings-body">
+
+        <!-- Voice -->
+        <div class="settings-group" id="voice-settings">
+          <div class="settings-group__title">Voice</div>
+          <select id="voice-select" aria-label="Select speech voice">
+            <option value="">Default voice</option>
+          </select>
+        </div>
+
+        <!-- Speech Rate -->
+        <div class="settings-group">
+          <div class="settings-group__title">Speech Speed</div>
+          <div class="slider-row">
+            <span style="font-size:0.8rem; color: var(--muted-foreground);">Slow</span>
+            <input
+              type="range"
+              id="rate-slider"
+              min="0.5"
+              max="1.5"
+              step="0.05"
+              value="0.85"
+              aria-label="Speech speed"
+              aria-valuemin="0.5"
+              aria-valuemax="1.5"
+            >
+            <span style="font-size:0.8rem; color: var(--muted-foreground);">Fast</span>
+            <span class="slider-value" id="rate-value" aria-live="polite">0.85x</span>
+          </div>
+        </div>
+
+        <!-- Volume -->
+        <div class="settings-group">
+          <div class="settings-group__title">Speech Volume</div>
+          <div class="slider-row">
+            <span style="font-size:0.8rem; color: var(--muted-foreground);">Low</span>
+            <input
+              type="range"
+              id="vol-slider"
+              min="0"
+              max="1"
+              step="0.05"
+              value="1"
+              aria-label="Speech volume"
+              aria-valuemin="0"
+              aria-valuemax="1"
+            >
+            <span style="font-size:0.8rem; color: var(--muted-foreground);">High</span>
+            <span class="slider-value" id="vol-value" aria-live="polite">100%</span>
+          </div>
+        </div>
+
+        <!-- Theme -->
+        <div class="settings-group">
+          <div class="settings-group__title">Theme</div>
+          <div class="theme-options" role="group" aria-label="Choose theme">
+            <button class="theme-btn active" data-theme="light" aria-pressed="true">
+              Light
+            </button>
+            <button class="theme-btn" data-theme="dark" aria-pressed="false">
+              Dark
+            </button>
+            <button class="theme-btn" data-theme="high-contrast" aria-pressed="false">
+              High Contrast
+            </button>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="settings-group">
+          <div class="settings-group__title">About</div>
+          <p style="font-size:0.88rem; color:var(--muted-foreground); line-height:1.55; margin-bottom:8px;">
+            CommCard helps neurodivergent adults communicate during moments when words are hard.
+            Built by <a href="https://estushealth.com" class="settings-link" target="_blank" rel="noopener noreferrer">Estus Health</a>,
+            a neuroaffirming occupational therapy practice in Perth, Australia.
+          </p>
+          <a href="mailto:performancelab@estushealth.com" class="settings-link">
+            Suggest a phrase
+          </a>
+        </div>
+
+        <!-- Privacy -->
+        <div class="settings-group">
+          <div class="settings-group__title">Privacy</div>
+          <div class="privacy-note">
+            CommCard does not collect, store, or transmit any personal data. Nothing you type or say is recorded, saved, or sent anywhere. Your communication is yours alone.
+          </div>
+        </div>
+
+      </div><!-- end .settings-body -->
+    </div><!-- end .settings-drawer -->
+  </div><!-- end #settings-panel -->
+
+  <!-- ============================================
+       Scripts (load order matters)
+       ============================================ -->
+  <!-- qrcode.js for PNG export QR codes -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <!-- App modules -->
+  <script src="js/phrases.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
