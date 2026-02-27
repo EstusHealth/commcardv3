@@ -131,6 +131,12 @@ body {
   gap: 8px;
 }
 
+.top-bar__brand-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
 .top-bar__title {
   font-family: var(--font-display);
   font-size: 1.35rem;
@@ -138,6 +144,19 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--primary-foreground);
+}
+
+.top-bar__brand-link {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.top-bar__brand-link:hover {
+  color: var(--primary-foreground);
+  text-decoration: underline;
 }
 
 .top-bar__actions {
