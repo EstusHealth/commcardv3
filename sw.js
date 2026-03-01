@@ -1,7 +1,7 @@
 /* CommCard V3 - Service Worker */
 /* Cache-first strategy for full offline support */
 
-const CACHE_NAME = 'commcard-v3-1';
+const CACHE_NAME = 'commcard-v3-2';
 
 const PRECACHE_URLS = [
   './',
