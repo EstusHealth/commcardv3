@@ -2,7 +2,7 @@
 /* Generates branded 1080x1080 PNG cards for download */
 
 const Export = (() => {
-  const CARD_URL = 'https://estushealth.com/commcard';
+  const CARD_URL = 'https://www.estushealth.com';
   const W = 1080;
   const H = 1080;
   const MARGIN = 80;
@@ -155,7 +155,7 @@ const Export = (() => {
     ctx.font = '400 26px Inter, sans-serif';
     ctx.globalAlpha = 0.85;
     ctx.fillText('Neuroaffirming Occupational Therapy', MARGIN, FOOTER_TOP + 100);
-    ctx.fillText('estushealth.com/commcard', MARGIN, FOOTER_TOP + 136);
+    ctx.fillText('www.estushealth.com', MARGIN, FOOTER_TOP + 136);
     ctx.globalAlpha = 1;
 
     // QR code (right side of footer)

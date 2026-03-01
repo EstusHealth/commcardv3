@@ -257,6 +257,9 @@
               <button class="btn btn-speak btn-primary" id="builder-speak" aria-label="Speak the custom phrase">
                 <span aria-hidden="true">🔊</span> Speak
               </button>
+              <button class="btn btn-secondary" id="builder-copy" aria-label="Copy phrase to clipboard">
+                <span aria-hidden="true">📋</span> Copy Text
+              </button>
               <button class="btn btn-secondary" id="builder-download" aria-label="Download custom card as image">
                 <span aria-hidden="true">💾</span> Download Card
               </button>
@@ -299,6 +302,9 @@
     tabindex="0"
   >
     <p id="fullscreen-overlay__text" aria-live="assertive"></p>
+    <button id="fullscreen-overlay__copy" class="fullscreen-copy-btn" aria-label="Copy text to clipboard">
+      <span aria-hidden="true">📋</span> Copy Text
+    </button>
     <span id="fullscreen-overlay__dismiss" aria-hidden="true">Tap anywhere to dismiss</span>
   </div>
 

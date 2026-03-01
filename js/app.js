@@ -54,6 +54,36 @@
   };
 
   // =============================================
+  // Copy to Clipboard
+  // =============================================
+  const copyToClipboard = async (text, btn) => {
+    const origHTML = btn.innerHTML;
+    const origLabel = btn.getAttribute('aria-label');
+    const showConfirm = () => {
+      btn.innerHTML = '<span aria-hidden="true">✓</span>';
+      btn.setAttribute('aria-label', 'Copied!');
+      setTimeout(() => {
+        btn.innerHTML = origHTML;
+        btn.setAttribute('aria-label', origLabel);
+      }, 1500);
+    };
+    try {
+      await navigator.clipboard.writeText(text);
+      showConfirm();
+    } catch {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch {}
+      document.body.removeChild(ta);
+      showConfirm();
+    }
+  };
+
+  // =============================================
   // Render: Phrase Cards
   // =============================================
   const createPhraseCard = (phrase, category) => {
@@ -121,8 +151,20 @@
       }
     });
 
+    // Copy button (icon-only)
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn-copy';
+    copyBtn.setAttribute('aria-label', `Copy text: ${phrase}`);
+    copyBtn.setAttribute('title', 'Copy text to clipboard');
+    copyBtn.innerHTML = '<span aria-hidden="true">📋</span>';
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyToClipboard(phrase, copyBtn);
+    });
+
     actions.appendChild(showBtn);
     actions.appendChild(spacer);
+    actions.appendChild(copyBtn);
     actions.appendChild(dlBtn);
     card.appendChild(accent);
     card.appendChild(text);
@@ -528,10 +570,29 @@
       });
     }
 
+    // Fullscreen copy button
+    const fullscreenCopyBtn = document.getElementById('fullscreen-overlay__copy');
+    if (fullscreenCopyBtn) {
+      fullscreenCopyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = document.getElementById('fullscreen-overlay__text')?.textContent?.trim();
+        if (text) copyToClipboard(text, fullscreenCopyBtn);
+      });
+    }
+
     // Builder text input
     const builderText = document.getElementById('builder-text');
     if (builderText) {
       builderText.addEventListener('input', updateBuilderPreview);
+    }
+
+    // Builder copy
+    const builderCopy = document.getElementById('builder-copy');
+    if (builderCopy) {
+      builderCopy.addEventListener('click', () => {
+        const text = document.getElementById('builder-text')?.value?.trim();
+        if (text) copyToClipboard(text, builderCopy);
+      });
     }
 
     // Builder speak
