@@ -93,6 +93,10 @@
 
       <hr class="sidebar__divider" aria-hidden="true">
 
+      <button class="sidebar__action" data-action="open-tts" aria-label="Open text to speech keyboard">
+        <span aria-hidden="true">🗣️</span>
+        Type to Speak
+      </button>
       <button class="sidebar__action" data-action="open-builder" aria-label="Open card builder">
         <span aria-hidden="true">✏️</span>
         Make Your Own Card
@@ -186,6 +190,14 @@
           <!-- Populated by JS -->
         </div>
 
+        <!-- Type to Speak (mobile prompt) -->
+        <div class="make-own-bar">
+          <button class="make-own-btn" data-action="open-tts" aria-label="Open text to speech keyboard to type and speak">
+            <span aria-hidden="true">🗣️</span>
+            Type to Speak
+          </button>
+        </div>
+
         <!-- Make Your Own (mobile prompt) -->
         <div class="make-own-bar">
           <button class="make-own-btn" data-action="open-builder" aria-label="Open the card builder to create your own phrase card">
@@ -268,6 +280,147 @@
           </div><!-- end .builder-card -->
         </div><!-- end .builder-section -->
       </div><!-- end #page-builder -->
+
+      <!-- ============================================
+           Text to Speech View
+           ============================================ -->
+      <div id="page-tts">
+        <div class="section-header">
+          <span class="section-header__emoji" aria-hidden="true">🗣️</span>
+          <h1 class="section-header__title">Type to Speak</h1>
+        </div>
+
+        <div class="tts-section active">
+          <div class="tts-card">
+
+            <!-- Back button -->
+            <div>
+              <button class="btn btn-secondary" id="tts-back" aria-label="Back to phrase library">
+                <span aria-hidden="true">←</span> Back to Phrases
+              </button>
+            </div>
+
+            <!-- Text display -->
+            <div class="tts-display-wrap">
+              <label for="tts-display">Your message</label>
+              <div
+                class="tts-display"
+                id="tts-display"
+                role="textbox"
+                aria-label="Text to speak display"
+                aria-live="polite"
+                aria-readonly="true"
+                tabindex="0"
+              >
+                <span class="tts-display__text" id="tts-display-text"></span>
+                <span class="tts-display__cursor" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="tts-actions">
+              <button class="btn btn-speak btn-primary" id="tts-speak" aria-label="Speak the typed message">
+                <span aria-hidden="true">🔊</span> Speak
+              </button>
+              <button class="btn btn-secondary" id="tts-show" aria-label="Show message fullscreen">
+                <span aria-hidden="true">📱</span> Show
+              </button>
+              <button class="btn btn-secondary" id="tts-copy" aria-label="Copy message to clipboard">
+                <span aria-hidden="true">📋</span> Copy
+              </button>
+              <button class="btn btn-secondary" id="tts-clear" aria-label="Clear message">
+                <span aria-hidden="true">✕</span> Clear
+              </button>
+            </div>
+
+            <!-- On-screen keyboard -->
+            <div class="tts-keyboard" id="tts-keyboard" role="group" aria-label="On-screen keyboard">
+              <!-- Row 1: Numbers -->
+              <div class="tts-keyboard__row">
+                <button class="tts-key" data-key="1">1</button>
+                <button class="tts-key" data-key="2">2</button>
+                <button class="tts-key" data-key="3">3</button>
+                <button class="tts-key" data-key="4">4</button>
+                <button class="tts-key" data-key="5">5</button>
+                <button class="tts-key" data-key="6">6</button>
+                <button class="tts-key" data-key="7">7</button>
+                <button class="tts-key" data-key="8">8</button>
+                <button class="tts-key" data-key="9">9</button>
+                <button class="tts-key" data-key="0">0</button>
+              </div>
+              <!-- Row 2: QWERTY -->
+              <div class="tts-keyboard__row">
+                <button class="tts-key" data-key="q">q</button>
+                <button class="tts-key" data-key="w">w</button>
+                <button class="tts-key" data-key="e">e</button>
+                <button class="tts-key" data-key="r">r</button>
+                <button class="tts-key" data-key="t">t</button>
+                <button class="tts-key" data-key="y">y</button>
+                <button class="tts-key" data-key="u">u</button>
+                <button class="tts-key" data-key="i">i</button>
+                <button class="tts-key" data-key="o">o</button>
+                <button class="tts-key" data-key="p">p</button>
+              </div>
+              <!-- Row 3: ASDF -->
+              <div class="tts-keyboard__row">
+                <button class="tts-key" data-key="a">a</button>
+                <button class="tts-key" data-key="s">s</button>
+                <button class="tts-key" data-key="d">d</button>
+                <button class="tts-key" data-key="f">f</button>
+                <button class="tts-key" data-key="g">g</button>
+                <button class="tts-key" data-key="h">h</button>
+                <button class="tts-key" data-key="j">j</button>
+                <button class="tts-key" data-key="k">k</button>
+                <button class="tts-key" data-key="l">l</button>
+              </div>
+              <!-- Row 4: ZXCV + Backspace -->
+              <div class="tts-keyboard__row">
+                <button class="tts-key tts-key--shift" data-action="shift" aria-label="Shift">
+                  <span aria-hidden="true">⇧</span>
+                </button>
+                <button class="tts-key" data-key="z">z</button>
+                <button class="tts-key" data-key="x">x</button>
+                <button class="tts-key" data-key="c">c</button>
+                <button class="tts-key" data-key="v">v</button>
+                <button class="tts-key" data-key="b">b</button>
+                <button class="tts-key" data-key="n">n</button>
+                <button class="tts-key" data-key="m">m</button>
+                <button class="tts-key tts-key--backspace" data-action="backspace" aria-label="Backspace">
+                  <span aria-hidden="true">⌫</span>
+                </button>
+              </div>
+              <!-- Row 5: Punctuation + Space -->
+              <div class="tts-keyboard__row">
+                <button class="tts-key" data-key=",">,</button>
+                <button class="tts-key" data-key=".">.</button>
+                <button class="tts-key" data-key="?">?</button>
+                <button class="tts-key" data-key="!">!</button>
+                <button class="tts-key tts-key--space" data-action="space" aria-label="Space">
+                  space
+                </button>
+                <button class="tts-key" data-key="'">'</button>
+                <button class="tts-key" data-key="-">-</button>
+              </div>
+            </div>
+
+            <!-- Quick phrases -->
+            <div class="tts-quick">
+              <label>Quick phrases</label>
+              <div class="tts-quick__row" id="tts-quick-phrases" role="group" aria-label="Quick phrases">
+                <button class="tts-quick__btn" data-phrase="Yes">Yes</button>
+                <button class="tts-quick__btn" data-phrase="No">No</button>
+                <button class="tts-quick__btn" data-phrase="Thank you">Thank you</button>
+                <button class="tts-quick__btn" data-phrase="Please">Please</button>
+                <button class="tts-quick__btn" data-phrase="Help">Help</button>
+                <button class="tts-quick__btn" data-phrase="I need a moment">I need a moment</button>
+                <button class="tts-quick__btn" data-phrase="I don't understand">I don't understand</button>
+                <button class="tts-quick__btn" data-phrase="Can you repeat that?">Can you repeat that?</button>
+              </div>
+            </div>
+
+          </div><!-- end .tts-card -->
+        </div><!-- end .tts-section -->
+      </div><!-- end #page-tts -->
 
       <!-- ============================================
            Footer

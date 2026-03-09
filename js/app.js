@@ -353,14 +353,87 @@
   };
 
   // =============================================
+  // Text to Speech Keyboard
+  // =============================================
+  const ttsState = {
+    text: '',
+    shiftActive: false
+  };
+
+  const updateTTSDisplay = () => {
+    const displayText = document.getElementById('tts-display-text');
+    if (displayText) {
+      displayText.textContent = ttsState.text;
+    }
+  };
+
+  const ttsAddChar = (char) => {
+    if (ttsState.text.length >= 500) return;
+    if (ttsState.shiftActive) {
+      char = char.toUpperCase();
+      ttsState.shiftActive = false;
+      const shiftBtn = document.querySelector('.tts-key--shift');
+      if (shiftBtn) shiftBtn.classList.remove('active');
+    }
+    ttsState.text += char;
+    updateTTSDisplay();
+  };
+
+  const ttsBackspace = () => {
+    ttsState.text = ttsState.text.slice(0, -1);
+    updateTTSDisplay();
+  };
+
+  const ttsSpace = () => {
+    if (ttsState.text.length >= 500) return;
+    ttsState.text += ' ';
+    updateTTSDisplay();
+  };
+
+  const ttsToggleShift = () => {
+    ttsState.shiftActive = !ttsState.shiftActive;
+    const shiftBtn = document.querySelector('.tts-key--shift');
+    if (shiftBtn) shiftBtn.classList.toggle('active', ttsState.shiftActive);
+
+    // Update key labels
+    document.querySelectorAll('.tts-key[data-key]').forEach(key => {
+      const char = key.dataset.key;
+      if (char.length === 1 && char.match(/[a-z]/)) {
+        key.textContent = ttsState.shiftActive ? char.toUpperCase() : char;
+      }
+    });
+  };
+
+  const ttsClear = () => {
+    ttsState.text = '';
+    ttsState.shiftActive = false;
+    const shiftBtn = document.querySelector('.tts-key--shift');
+    if (shiftBtn) shiftBtn.classList.remove('active');
+    document.querySelectorAll('.tts-key[data-key]').forEach(key => {
+      const char = key.dataset.key;
+      if (char.length === 1 && char.match(/[a-z]/)) {
+        key.textContent = char;
+      }
+    });
+    updateTTSDisplay();
+  };
+
+  const ttsSetPhrase = (phrase) => {
+    ttsState.text = phrase;
+    updateTTSDisplay();
+    Voice.speak(phrase);
+  };
+
+  // =============================================
   // View switching
   // =============================================
   const setView = (view) => {
     state.view = view;
+    document.body.classList.remove('view-builder', 'view-tts');
     if (view === 'builder') {
       document.body.classList.add('view-builder');
-    } else {
-      document.body.classList.remove('view-builder');
+    } else if (view === 'tts') {
+      document.body.classList.add('view-tts');
     }
   };
 
@@ -483,6 +556,11 @@
           selectCategory(item.dataset.cat);
         });
       }
+    });
+
+    // Type to Speak button
+    document.querySelectorAll('[data-action="open-tts"]').forEach(btn => {
+      btn.addEventListener('click', () => setView('tts'));
     });
 
     // Make Your Own button
@@ -631,6 +709,97 @@
         } finally {
           builderDownload.disabled = false;
           builderDownload.textContent = origText;
+        }
+      });
+    }
+
+    // ---- TTS Event Listeners ----
+
+    // TTS back button
+    const ttsBack = document.getElementById('tts-back');
+    if (ttsBack) {
+      ttsBack.addEventListener('click', () => setView('phrases'));
+    }
+
+    // TTS keyboard keys
+    const ttsKeyboard = document.getElementById('tts-keyboard');
+    if (ttsKeyboard) {
+      ttsKeyboard.addEventListener('click', (e) => {
+        const key = e.target.closest('.tts-key');
+        if (!key) return;
+
+        const action = key.dataset.action;
+        if (action === 'backspace') {
+          ttsBackspace();
+        } else if (action === 'space') {
+          ttsSpace();
+        } else if (action === 'shift') {
+          ttsToggleShift();
+        } else if (key.dataset.key) {
+          ttsAddChar(key.dataset.key);
+        }
+      });
+    }
+
+    // TTS speak button
+    const ttsSpeakBtn = document.getElementById('tts-speak');
+    if (ttsSpeakBtn) {
+      ttsSpeakBtn.addEventListener('click', () => {
+        const text = ttsState.text.trim();
+        if (text) Voice.speak(text);
+      });
+    }
+
+    // TTS show fullscreen button
+    const ttsShowBtn = document.getElementById('tts-show');
+    if (ttsShowBtn) {
+      ttsShowBtn.addEventListener('click', () => {
+        const text = ttsState.text.trim();
+        if (text) {
+          showFullscreen(text, { colorLight: '#F0E8E0', color: '#76543E', colorDark: '#76543E' });
+        }
+      });
+    }
+
+    // TTS copy button
+    const ttsCopyBtn = document.getElementById('tts-copy');
+    if (ttsCopyBtn) {
+      ttsCopyBtn.addEventListener('click', () => {
+        const text = ttsState.text.trim();
+        if (text) copyToClipboard(text, ttsCopyBtn);
+      });
+    }
+
+    // TTS clear button
+    const ttsClearBtn = document.getElementById('tts-clear');
+    if (ttsClearBtn) {
+      ttsClearBtn.addEventListener('click', ttsClear);
+    }
+
+    // TTS quick phrases
+    const ttsQuickPhrases = document.getElementById('tts-quick-phrases');
+    if (ttsQuickPhrases) {
+      ttsQuickPhrases.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tts-quick__btn');
+        if (!btn) return;
+        ttsSetPhrase(btn.dataset.phrase);
+      });
+    }
+
+    // TTS display: allow physical keyboard input when focused
+    const ttsDisplay = document.getElementById('tts-display');
+    if (ttsDisplay) {
+      ttsDisplay.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace') {
+          e.preventDefault();
+          ttsBackspace();
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          const text = ttsState.text.trim();
+          if (text) Voice.speak(text);
+        } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          ttsAddChar(e.key);
         }
       });
     }
