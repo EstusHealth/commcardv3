@@ -554,25 +554,10 @@ body {
   background-color: var(--secondary);
 }
 
-/* Add to sentence button */
-.btn-add {
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  background-color: transparent;
-  color: var(--muted-foreground);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: color var(--transition), background-color var(--transition);
-}
-
-.btn-add:hover {
-  color: var(--primary);
+/* Card "added" flash feedback */
+.phrase-card--added {
+  outline: 3px solid var(--primary);
+  outline-offset: -3px;
   background-color: var(--secondary);
 }
 

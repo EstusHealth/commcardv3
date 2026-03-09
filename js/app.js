@@ -90,6 +90,7 @@
     const card = document.createElement('article');
     card.className = 'phrase-card';
     card.setAttribute('role', 'listitem');
+    card.style.cursor = 'pointer';
 
     const accent = document.createElement('div');
     accent.className = 'phrase-card__accent';
@@ -108,7 +109,10 @@
       speakBtn.className = 'btn btn-speak';
       speakBtn.setAttribute('aria-label', `Speak: ${phrase}`);
       speakBtn.innerHTML = '<span aria-hidden="true">🔊</span> Speak';
-      speakBtn.addEventListener('click', () => Voice.speak(phrase));
+      speakBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        Voice.speak(phrase);
+      });
       actions.appendChild(speakBtn);
     }
 
@@ -117,7 +121,10 @@
     showBtn.className = 'btn btn-show';
     showBtn.setAttribute('aria-label', `Show fullscreen: ${phrase}`);
     showBtn.innerHTML = '<span aria-hidden="true">📱</span> Show';
-    showBtn.addEventListener('click', () => showFullscreen(phrase, category));
+    showBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showFullscreen(phrase, category);
+    });
 
     const spacer = document.createElement('span');
     spacer.className = 'spacer';
@@ -129,7 +136,8 @@
     dlBtn.setAttribute('aria-label', `Download card: ${phrase}`);
     dlBtn.setAttribute('title', 'Download as image');
     dlBtn.innerHTML = '<span aria-hidden="true">💾</span>';
-    dlBtn.addEventListener('click', async () => {
+    dlBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
       dlBtn.disabled = true;
       dlBtn.innerHTML = '<span aria-hidden="true">⏳</span>';
       try {
@@ -140,7 +148,7 @@
       }
     });
 
-    // Keyboard: Enter = Speak, Shift+Enter = Show
+    // Keyboard: Enter = Speak, Shift+Enter = Show, Space = Add to sentence
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey && Voice.isAvailable) {
         e.preventDefault();
@@ -162,23 +170,16 @@
       copyToClipboard(phrase, copyBtn);
     });
 
-    // Add to sentence button (icon-only)
-    const addBtn = document.createElement('button');
-    addBtn.className = 'btn-add';
-    addBtn.setAttribute('aria-label', `Add to sentence: ${phrase}`);
-    addBtn.setAttribute('title', 'Add to sentence');
-    addBtn.innerHTML = '<span aria-hidden="true">➕</span>';
-    addBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    // Tap anywhere on the card to add phrase to combiner
+    card.addEventListener('click', () => {
       addPhraseToCombiner(phrase);
-      // Brief visual feedback
-      addBtn.innerHTML = '<span aria-hidden="true">✓</span>';
-      setTimeout(() => { addBtn.innerHTML = '<span aria-hidden="true">➕</span>'; }, 600);
+      // Brief flash feedback
+      card.classList.add('phrase-card--added');
+      setTimeout(() => card.classList.remove('phrase-card--added'), 400);
     });
 
     actions.appendChild(showBtn);
     actions.appendChild(spacer);
-    actions.appendChild(addBtn);
     actions.appendChild(copyBtn);
     actions.appendChild(dlBtn);
     card.appendChild(accent);
