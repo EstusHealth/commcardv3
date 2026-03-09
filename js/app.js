@@ -162,8 +162,23 @@
       copyToClipboard(phrase, copyBtn);
     });
 
+    // Add to sentence button (icon-only)
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn-add';
+    addBtn.setAttribute('aria-label', `Add to sentence: ${phrase}`);
+    addBtn.setAttribute('title', 'Add to sentence');
+    addBtn.innerHTML = '<span aria-hidden="true">➕</span>';
+    addBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addPhraseToCombiner(phrase);
+      // Brief visual feedback
+      addBtn.innerHTML = '<span aria-hidden="true">✓</span>';
+      setTimeout(() => { addBtn.innerHTML = '<span aria-hidden="true">➕</span>'; }, 600);
+    });
+
     actions.appendChild(showBtn);
     actions.appendChild(spacer);
+    actions.appendChild(addBtn);
     actions.appendChild(copyBtn);
     actions.appendChild(dlBtn);
     card.appendChild(accent);
@@ -350,6 +365,50 @@
       previewArea.style.backgroundColor = state.builderColorLight;
       previewArea.style.borderLeft = `4px solid ${state.builderColor}`;
     }
+  };
+
+  // =============================================
+  // Phrase Combiner (add multiple phrase cards to a sentence)
+  // =============================================
+  const combinerState = {
+    phrases: []
+  };
+
+  const updateCombinerUI = () => {
+    const combiner = document.getElementById('phrase-combiner');
+    const strip = document.getElementById('phrase-combiner-strip');
+    if (!combiner || !strip) return;
+
+    strip.innerHTML = '';
+
+    if (combinerState.phrases.length === 0) {
+      combiner.classList.add('hidden');
+      return;
+    }
+
+    combiner.classList.remove('hidden');
+
+    combinerState.phrases.forEach((phrase, index) => {
+      const chip = document.createElement('button');
+      chip.className = 'phrase-combiner__chip';
+      chip.setAttribute('role', 'listitem');
+      chip.setAttribute('aria-label', `Remove "${phrase}" from combined sentence`);
+      chip.textContent = phrase;
+      chip.addEventListener('click', () => {
+        combinerState.phrases.splice(index, 1);
+        updateCombinerUI();
+      });
+      strip.appendChild(chip);
+    });
+  };
+
+  const addPhraseToCombiner = (phrase) => {
+    combinerState.phrases.push(phrase);
+    updateCombinerUI();
+  };
+
+  const getCombinedText = () => {
+    return combinerState.phrases.join(' ');
   };
 
   // =============================================
@@ -638,6 +697,41 @@
         });
       }
     });
+
+    // ---- Phrase Combiner Event Listeners ----
+    const combinerSpeak = document.getElementById('combiner-speak');
+    if (combinerSpeak) {
+      combinerSpeak.addEventListener('click', () => {
+        const text = getCombinedText().trim();
+        if (text) Voice.speak(text);
+      });
+    }
+
+    const combinerShow = document.getElementById('combiner-show');
+    if (combinerShow) {
+      combinerShow.addEventListener('click', () => {
+        const text = getCombinedText().trim();
+        if (text) {
+          showFullscreen(text, { colorLight: '#F0E8E0', color: '#76543E', colorDark: '#76543E' });
+        }
+      });
+    }
+
+    const combinerCopy = document.getElementById('combiner-copy');
+    if (combinerCopy) {
+      combinerCopy.addEventListener('click', () => {
+        const text = getCombinedText().trim();
+        if (text) copyToClipboard(text, combinerCopy);
+      });
+    }
+
+    const combinerClear = document.getElementById('combiner-clear');
+    if (combinerClear) {
+      combinerClear.addEventListener('click', () => {
+        combinerState.phrases = [];
+        updateCombinerUI();
+      });
+    }
 
     // Type to Speak button
     document.querySelectorAll('[data-action="open-tts"]').forEach(btn => {

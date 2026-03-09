@@ -554,9 +554,129 @@ body {
   background-color: var(--secondary);
 }
 
+/* Add to sentence button */
+.btn-add {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+.btn-add:hover {
+  color: var(--primary);
+  background-color: var(--secondary);
+}
+
 /* Hide speak buttons when voice not available */
 .no-voice .btn-speak {
   display: none;
+}
+
+/* =============================================
+   Phrase Combiner Bar
+   ============================================= */
+.phrase-combiner {
+  margin: 0 12px 12px;
+  padding: 14px;
+  background-color: var(--card);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: combinerSlideIn 0.15s ease;
+}
+
+.phrase-combiner.hidden {
+  display: none;
+}
+
+@keyframes combinerSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phrase-combiner {
+    animation: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .phrase-combiner {
+    margin: 0 16px 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .phrase-combiner {
+    margin: 0 24px 16px;
+  }
+}
+
+.phrase-combiner__strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-height: 36px;
+}
+
+.phrase-combiner__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: opacity var(--transition), transform 0.05s;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phrase-combiner__chip::after {
+  content: '\00D7';
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.phrase-combiner__chip:hover {
+  opacity: 0.85;
+}
+
+.phrase-combiner__chip:active {
+  transform: scale(0.97);
+}
+
+.phrase-combiner__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.phrase-combiner__actions .spacer {
+  flex: 1;
 }
 
 /* =============================================

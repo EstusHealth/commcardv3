@@ -180,6 +180,28 @@
           <div class="section-header__bar" style="width:40px;" aria-hidden="true"></div>
         </div>
 
+        <!-- Phrase Combiner Bar -->
+        <div class="phrase-combiner hidden" id="phrase-combiner" aria-label="Sentence combiner" role="region">
+          <div class="phrase-combiner__strip" id="phrase-combiner-strip" role="list" aria-live="polite">
+            <!-- Chips populated by JS -->
+          </div>
+          <div class="phrase-combiner__actions">
+            <button class="btn btn-speak btn-primary" id="combiner-speak" aria-label="Speak combined sentence">
+              <span aria-hidden="true">🔊</span> Speak All
+            </button>
+            <button class="btn btn-secondary" id="combiner-show" aria-label="Show combined sentence fullscreen">
+              <span aria-hidden="true">📱</span> Show All
+            </button>
+            <button class="btn btn-secondary" id="combiner-copy" aria-label="Copy combined sentence to clipboard">
+              <span aria-hidden="true">📋</span> Copy All
+            </button>
+            <span class="spacer" aria-hidden="true"></span>
+            <button class="btn btn-secondary" id="combiner-clear" aria-label="Clear all phrases from combiner">
+              <span aria-hidden="true">✕</span> Clear
+            </button>
+          </div>
+        </div>
+
         <!-- Phrase Grid -->
         <div
           class="phrase-grid"
