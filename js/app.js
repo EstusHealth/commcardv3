@@ -425,6 +425,87 @@
   };
 
   // =============================================
+  // Sentence Builder - Word Bank
+  // =============================================
+  const WORD_BANK = {
+    people: ['I', 'you', 'we', 'they', 'he', 'she', 'my', 'your', 'someone', 'everyone', 'no one', 'the doctor', 'the nurse', 'my friend', 'my family', 'this person'],
+    actions: ['need', 'want', 'have', 'feel', 'am', 'is', 'can', 'cannot', 'go', 'come', 'wait', 'stop', 'help', 'eat', 'drink', 'sit', 'stand', 'leave', 'stay', 'rest', 'try', 'like', 'know', 'think', 'see', 'hear', 'understand'],
+    feelings: ['okay', 'not okay', 'good', 'bad', 'tired', 'overwhelmed', 'anxious', 'scared', 'confused', 'frustrated', 'sad', 'happy', 'uncomfortable', 'in pain', 'dizzy', 'nauseous', 'calm', 'safe', 'unsafe', 'stressed', 'angry', 'worried'],
+    places: ['here', 'there', 'home', 'outside', 'inside', 'the bathroom', 'the car', 'the hospital', 'the shop', 'the room', 'somewhere quiet', 'somewhere else'],
+    things: ['water', 'food', 'medicine', 'phone', 'help', 'time', 'space', 'a break', 'a moment', 'my bag', 'my things', 'a pen', 'paper', 'headphones', 'sunglasses', 'a drink', 'a seat'],
+    describers: ['more', 'less', 'very', 'not', 'too', 'really', 'a little', 'a lot', 'slowly', 'quietly', 'quickly', 'soon', 'now', 'later', 'again', 'also', 'only', 'just'],
+    time: ['now', 'later', 'soon', 'today', 'tomorrow', 'yesterday', 'in a minute', 'in a moment', 'not yet', 'right now', 'after this', 'before', 'already', 'first', 'then', 'next'],
+    connectors: ['and', 'or', 'but', 'because', 'so', 'if', 'to', 'for', 'with', 'without', 'about', 'from', 'at', 'in', 'on', 'the', 'a', 'this', 'that', 'it', 'please', 'thank you']
+  };
+
+  const sentenceState = {
+    words: [],
+    activeCategory: 'people'
+  };
+
+  const renderSentenceStrip = () => {
+    const strip = document.getElementById('tts-sentence-strip');
+    const placeholder = document.getElementById('tts-strip-placeholder');
+    if (!strip) return;
+
+    // Remove existing chips
+    strip.querySelectorAll('.tts-word-chip').forEach(c => c.remove());
+
+    if (sentenceState.words.length === 0) {
+      if (placeholder) placeholder.style.display = '';
+      return;
+    }
+
+    if (placeholder) placeholder.style.display = 'none';
+
+    sentenceState.words.forEach((word, index) => {
+      const chip = document.createElement('button');
+      chip.className = 'tts-word-chip';
+      chip.textContent = word;
+      chip.setAttribute('role', 'listitem');
+      chip.setAttribute('aria-label', `Remove "${word}" from sentence`);
+      chip.addEventListener('click', () => {
+        sentenceState.words.splice(index, 1);
+        renderSentenceStrip();
+      });
+      strip.appendChild(chip);
+    });
+  };
+
+  const getSentenceText = () => {
+    return sentenceState.words.join(' ');
+  };
+
+  const renderWordGrid = (category) => {
+    const grid = document.getElementById('tts-word-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const words = WORD_BANK[category] || [];
+    words.forEach(word => {
+      const btn = document.createElement('button');
+      btn.className = 'tts-word-btn';
+      btn.textContent = word;
+      btn.setAttribute('aria-label', `Add "${word}" to sentence`);
+      btn.addEventListener('click', () => {
+        sentenceState.words.push(word);
+        renderSentenceStrip();
+      });
+      grid.appendChild(btn);
+    });
+  };
+
+  const selectWordCategory = (category) => {
+    sentenceState.activeCategory = category;
+    document.querySelectorAll('.tts-word-tab').forEach(tab => {
+      const isActive = tab.dataset.wordcat === category;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    renderWordGrid(category);
+  };
+
+  // =============================================
   // View switching
   // =============================================
   const setView = (view) => {
@@ -783,6 +864,46 @@
         const btn = e.target.closest('.tts-quick__btn');
         if (!btn) return;
         ttsSetPhrase(btn.dataset.phrase);
+      });
+    }
+
+    // ---- Sentence Builder Event Listeners ----
+
+    // Initialize word grid with default category
+    selectWordCategory('people');
+
+    // Word category tabs
+    document.querySelectorAll('.tts-word-tab').forEach(tab => {
+      tab.addEventListener('click', () => selectWordCategory(tab.dataset.wordcat));
+    });
+
+    // Sentence speak button
+    const sentenceSpeakBtn = document.getElementById('tts-sentence-speak');
+    if (sentenceSpeakBtn) {
+      sentenceSpeakBtn.addEventListener('click', () => {
+        const text = getSentenceText().trim();
+        if (text) Voice.speak(text);
+      });
+    }
+
+    // Send sentence to main display
+    const sentenceToDisplay = document.getElementById('tts-sentence-to-display');
+    if (sentenceToDisplay) {
+      sentenceToDisplay.addEventListener('click', () => {
+        const text = getSentenceText().trim();
+        if (text) {
+          ttsState.text = text;
+          updateTTSDisplay();
+        }
+      });
+    }
+
+    // Clear sentence strip
+    const sentenceClearBtn = document.getElementById('tts-sentence-clear');
+    if (sentenceClearBtn) {
+      sentenceClearBtn.addEventListener('click', () => {
+        sentenceState.words = [];
+        renderSentenceStrip();
       });
     }
 

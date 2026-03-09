@@ -1001,6 +1001,160 @@ body {
   color: var(--primary-foreground);
 }
 
+/* Sentence Builder */
+.tts-sentence-builder {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tts-sentence-builder__hint {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  margin-top: -6px;
+}
+
+/* Sentence strip */
+.tts-sentence-strip {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  min-height: 52px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  align-content: flex-start;
+}
+
+.tts-sentence-strip__placeholder {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.tts-word-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: opacity var(--transition), transform 0.05s;
+  white-space: nowrap;
+}
+
+.tts-word-chip::after {
+  content: '\00D7';
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
+.tts-word-chip:hover {
+  opacity: 0.85;
+}
+
+.tts-word-chip:active {
+  transform: scale(0.95);
+}
+
+/* Sentence strip actions */
+.tts-sentence-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Word category tabs */
+.tts-word-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tts-word-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tts-word-tab {
+  padding: 8px 14px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.tts-word-tab:hover {
+  color: var(--foreground);
+}
+
+.tts-word-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* Word grid */
+.tts-word-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.tts-word-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--foreground);
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), transform 0.05s;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tts-word-btn:hover {
+  background-color: var(--cream);
+  border-color: var(--primary);
+}
+
+.tts-word-btn:active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  transform: scale(0.96);
+}
+
 /* =============================================
    Make Your Own Bar
    ============================================= */

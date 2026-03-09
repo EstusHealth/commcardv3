@@ -418,6 +418,47 @@
               </div>
             </div>
 
+            <!-- Sentence Builder -->
+            <div class="tts-sentence-builder">
+              <label>Build a sentence</label>
+              <p class="tts-sentence-builder__hint">Tap words to add them to your message. Tap a word chip to remove it.</p>
+
+              <!-- Sentence strip -->
+              <div class="tts-sentence-strip" id="tts-sentence-strip" role="list" aria-label="Sentence being built" aria-live="polite">
+                <span class="tts-sentence-strip__placeholder" id="tts-strip-placeholder">Tap words below to build a sentence...</span>
+              </div>
+
+              <!-- Sentence strip actions -->
+              <div class="tts-sentence-actions">
+                <button class="btn btn-speak btn-primary" id="tts-sentence-speak" aria-label="Speak the built sentence">
+                  <span aria-hidden="true">🔊</span> Speak Sentence
+                </button>
+                <button class="btn btn-secondary" id="tts-sentence-to-display" aria-label="Send sentence to main display">
+                  <span aria-hidden="true">↑</span> Send to Display
+                </button>
+                <button class="btn btn-secondary" id="tts-sentence-clear" aria-label="Clear sentence strip">
+                  <span aria-hidden="true">✕</span> Clear
+                </button>
+              </div>
+
+              <!-- Word category tabs -->
+              <div class="tts-word-tabs" role="tablist" aria-label="Word categories">
+                <button class="tts-word-tab active" data-wordcat="people" role="tab" aria-selected="true">People</button>
+                <button class="tts-word-tab" data-wordcat="actions" role="tab" aria-selected="false">Actions</button>
+                <button class="tts-word-tab" data-wordcat="feelings" role="tab" aria-selected="false">Feelings</button>
+                <button class="tts-word-tab" data-wordcat="places" role="tab" aria-selected="false">Places</button>
+                <button class="tts-word-tab" data-wordcat="things" role="tab" aria-selected="false">Things</button>
+                <button class="tts-word-tab" data-wordcat="describers" role="tab" aria-selected="false">Describers</button>
+                <button class="tts-word-tab" data-wordcat="time" role="tab" aria-selected="false">Time</button>
+                <button class="tts-word-tab" data-wordcat="connectors" role="tab" aria-selected="false">Little Words</button>
+              </div>
+
+              <!-- Word grid (populated by JS) -->
+              <div class="tts-word-grid" id="tts-word-grid" role="group" aria-label="Available words">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
           </div><!-- end .tts-card -->
         </div><!-- end .tts-section -->
       </div><!-- end #page-tts -->
