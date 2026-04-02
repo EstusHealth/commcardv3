@@ -365,6 +365,7 @@
     if (previewArea) {
       previewArea.style.backgroundColor = state.builderColorLight;
       previewArea.style.borderLeft = `4px solid ${state.builderColor}`;
+      preview.style.color = state.builderColor;
     }
   };
 
