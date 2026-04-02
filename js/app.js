@@ -858,6 +858,16 @@
       });
     }
 
+    // Builder show card (fullscreen)
+    const builderShow = document.getElementById('builder-show');
+    if (builderShow) {
+      builderShow.addEventListener('click', () => {
+        const text = document.getElementById('builder-text')?.value?.trim();
+        if (!text) return;
+        showFullscreen(text, { colorLight: state.builderColorLight, color: state.builderColor });
+      });
+    }
+
     // Builder download
     const builderDownload = document.getElementById('builder-download');
     if (builderDownload) {
