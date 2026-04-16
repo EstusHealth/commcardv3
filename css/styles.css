@@ -1577,13 +1577,282 @@ body {
   font-size: 0.95rem;
 }
 
+/* =============================================
+   AAC Core Words (Kids) Page
+   ============================================= */
+.aac-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 12px 24px;
+}
+
+@media (min-width: 600px) {
+  .aac-section { padding: 0 16px 24px; }
+}
+
+@media (min-width: 768px) {
+  .aac-section { padding: 0 24px 24px; }
+}
+
+.aac-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Sentence strip */
+.aac-sentence {
+  background-color: var(--card);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: sticky;
+  top: 56px;
+  z-index: 80;
+}
+
+.aac-sentence__strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  align-content: flex-start;
+  min-height: 52px;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+}
+
+.aac-sentence__placeholder {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+  opacity: 0.7;
+  padding: 4px 6px;
+}
+
+.aac-sentence__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 6px 8px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+  background-color: var(--cream);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: opacity var(--transition), transform 0.05s;
+  white-space: nowrap;
+}
+
+.aac-sentence__chip .aac-sentence__chip-symbol {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.aac-sentence__chip::after {
+  content: '\00D7';
+  font-size: 0.9em;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.aac-sentence__chip:hover { opacity: 0.85; }
+.aac-sentence__chip:active { transform: scale(0.97); }
+
+.aac-sentence__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Category pills */
+.aac-cat-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 8px;
+  padding: 4px 0;
+  flex-wrap: nowrap;
+}
+
+.aac-cat-tabs::-webkit-scrollbar { display: none; }
+
+.aac-cat-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  background-color: var(--card);
+  border: 3px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color var(--transition), color var(--transition),
+              background-color var(--transition), transform 0.05s;
+}
+
+.aac-cat-tab .aac-cat-tab__emoji {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.aac-cat-tab:hover {
+  transform: translateY(-1px);
+}
+
+.aac-cat-tab.active {
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aac-cat-tab:hover { transform: none; }
+}
+
+/* Word grid */
+.aac-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .aac-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .aac-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .aac-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Word tile */
+.aac-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 10px 6px 12px;
+  min-height: 104px;
+  background-color: var(--card);
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--font-body);
+  transition: transform 0.05s, box-shadow var(--transition),
+              background-color var(--transition);
+  box-shadow: var(--shadow);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.aac-word:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.aac-word:active,
+.aac-word.aac-word--tapped {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aac-word:hover { transform: none; }
+  .aac-word:active,
+  .aac-word.aac-word--tapped { transform: none; }
+}
+
+.aac-word__symbol {
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-top: 4px;
+  /* Keep emoji rendered in colour on all platforms */
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji',
+               'Android Emoji', 'EmojiSymbols', sans-serif;
+}
+
+@media (min-width: 600px) {
+  .aac-word__symbol { font-size: 2.6rem; }
+}
+
+.aac-word__label {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+  word-break: break-word;
+  line-height: 1.15;
+  padding: 0 2px;
+}
+
+@media (min-width: 600px) {
+  .aac-word__label { font-size: 0.95rem; }
+}
+
+/* High contrast overrides */
+[data-theme="high-contrast"] .aac-word {
+  background-color: #111;
+  border-color: #fff;
+}
+
+[data-theme="high-contrast"] .aac-word__label {
+  color: #fff;
+}
+
+[data-theme="high-contrast"] .aac-cat-tab {
+  background-color: #111;
+  color: #fff;
+}
+
+[data-theme="high-contrast"] .aac-cat-tab.active {
+  background-color: #FFD700 !important;
+  color: #000 !important;
+  border-color: #FFD700 !important;
+}
+
 /* Page view toggle */
 #page-phrases { display: block; }
 #page-builder { display: none; }
 #page-tts { display: none; }
+#page-aac { display: none; }
 
 body.view-builder #page-phrases { display: none; }
 body.view-builder #page-builder { display: block; }
 
 body.view-tts #page-phrases { display: none; }
 body.view-tts #page-tts { display: block; }
+
+body.view-aac #page-phrases { display: none; }
+body.view-aac #page-aac { display: block; }

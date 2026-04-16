@@ -93,6 +93,10 @@
 
       <hr class="sidebar__divider" aria-hidden="true">
 
+      <button class="sidebar__action" data-action="open-aac" aria-label="Open kids core words AAC board">
+        <span aria-hidden="true">🧸</span>
+        Kids Core Words
+      </button>
       <button class="sidebar__action" data-action="open-tts" aria-label="Open text to speech keyboard">
         <span aria-hidden="true">🗣️</span>
         Type to Speak
@@ -210,6 +214,14 @@
           aria-label="Communication phrases"
         >
           <!-- Populated by JS -->
+        </div>
+
+        <!-- Kids Core Words (mobile prompt) -->
+        <div class="make-own-bar">
+          <button class="make-own-btn" data-action="open-aac" aria-label="Open kids core words AAC board">
+            <span aria-hidden="true">🧸</span>
+            Kids Core Words
+          </button>
         </div>
 
         <!-- Type to Speak (mobile prompt) -->
@@ -489,6 +501,57 @@
       </div><!-- end #page-tts -->
 
       <!-- ============================================
+           AAC Core Words View (for kids)
+           ============================================ -->
+      <div id="page-aac">
+        <div class="section-header">
+          <span class="section-header__emoji" aria-hidden="true">🧸</span>
+          <h1 class="section-header__title">Kids Core Words</h1>
+        </div>
+
+        <div class="aac-section active">
+
+          <!-- Back button row -->
+          <div class="aac-toolbar">
+            <button class="btn btn-secondary" id="aac-back" aria-label="Back to phrase library">
+              <span aria-hidden="true">←</span> Back to Phrases
+            </button>
+          </div>
+
+          <!-- Sentence strip -->
+          <div class="aac-sentence" aria-label="Sentence builder" role="region">
+            <div class="aac-sentence__strip" id="aac-sentence-strip" role="list" aria-live="polite">
+              <span class="aac-sentence__placeholder" id="aac-sentence-placeholder">
+                Tap words below to build a sentence...
+              </span>
+            </div>
+            <div class="aac-sentence__actions">
+              <button class="btn btn-speak btn-primary" id="aac-sentence-speak" aria-label="Speak sentence">
+                <span aria-hidden="true">🔊</span> Speak
+              </button>
+              <button class="btn btn-secondary" id="aac-sentence-backspace" aria-label="Remove last word">
+                <span aria-hidden="true">⌫</span> Undo
+              </button>
+              <button class="btn btn-secondary" id="aac-sentence-clear" aria-label="Clear sentence">
+                <span aria-hidden="true">✕</span> Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Category pills -->
+          <div class="aac-cat-tabs" id="aac-cat-tabs" role="tablist" aria-label="AAC word categories">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Word grid -->
+          <div class="aac-grid" id="aac-grid" role="list" aria-label="Core words">
+            <!-- Populated by JS -->
+          </div>
+
+        </div><!-- end .aac-section -->
+      </div><!-- end #page-aac -->
+
+      <!-- ============================================
            Footer
            ============================================ -->
       <footer class="footer" role="contentinfo">
@@ -649,6 +712,7 @@
 
   <!-- App modules -->
   <script src="js/phrases.js"></script>
+  <script src="js/aac.js"></script>
   <script src="js/voice.js"></script>
   <script src="js/export.js"></script>
   <script src="js/app.js"></script>

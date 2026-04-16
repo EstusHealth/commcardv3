@@ -571,13 +571,155 @@
   // =============================================
   const setView = (view) => {
     state.view = view;
-    document.body.classList.remove('view-builder', 'view-tts');
+    document.body.classList.remove('view-builder', 'view-tts', 'view-aac');
     if (view === 'builder') {
       document.body.classList.add('view-builder');
     } else if (view === 'tts') {
       document.body.classList.add('view-tts');
+    } else if (view === 'aac') {
+      document.body.classList.add('view-aac');
     }
   };
+
+  // =============================================
+  // AAC Core Words (kids) view
+  // =============================================
+  const aacState = {
+    activeCategoryId: (typeof AAC_CATEGORIES !== 'undefined' && AAC_CATEGORIES[0])
+      ? AAC_CATEGORIES[0].id
+      : null,
+    sentence: [] // array of { word, symbol }
+  };
+
+  const renderAACCategoryTabs = () => {
+    const tabs = document.getElementById('aac-cat-tabs');
+    if (!tabs || typeof AAC_CATEGORIES === 'undefined') return;
+    tabs.innerHTML = '';
+
+    AAC_CATEGORIES.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'aac-cat-tab';
+      btn.setAttribute('role', 'tab');
+      btn.dataset.aacCat = cat.id;
+      const isActive = cat.id === aacState.activeCategoryId;
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      if (isActive) {
+        btn.classList.add('active');
+        btn.style.backgroundColor = cat.color;
+        btn.style.borderColor = cat.color;
+      } else {
+        btn.style.borderColor = cat.color;
+        btn.style.color = cat.colorDark || cat.color;
+      }
+
+      const emoji = document.createElement('span');
+      emoji.className = 'aac-cat-tab__emoji';
+      emoji.setAttribute('aria-hidden', 'true');
+      emoji.textContent = cat.emoji;
+      btn.appendChild(emoji);
+      btn.appendChild(document.createTextNode(cat.label));
+
+      btn.addEventListener('click', () => selectAACCategory(cat.id));
+      tabs.appendChild(btn);
+    });
+  };
+
+  const renderAACGrid = () => {
+    const grid = document.getElementById('aac-grid');
+    if (!grid || typeof AAC_CATEGORIES === 'undefined') return;
+    grid.innerHTML = '';
+
+    const cat = AAC_CATEGORIES.find(c => c.id === aacState.activeCategoryId);
+    if (!cat) return;
+
+    cat.words.forEach(entry => {
+      const tile = document.createElement('button');
+      tile.className = 'aac-word';
+      tile.setAttribute('role', 'listitem');
+      tile.setAttribute('aria-label', `${entry.word}. Tap to speak and add to sentence.`);
+      tile.style.backgroundColor = cat.colorLight;
+      tile.style.borderColor = cat.color;
+
+      const symbol = document.createElement('span');
+      symbol.className = 'aac-word__symbol';
+      symbol.setAttribute('aria-hidden', 'true');
+      symbol.textContent = entry.symbol;
+
+      const label = document.createElement('span');
+      label.className = 'aac-word__label';
+      label.style.color = cat.colorDark || cat.color;
+      label.textContent = entry.word;
+
+      tile.appendChild(symbol);
+      tile.appendChild(label);
+
+      tile.addEventListener('click', () => {
+        Voice.speak(entry.word);
+        aacState.sentence.push({ word: entry.word, symbol: entry.symbol });
+        renderAACSentence();
+        // Brief flash feedback
+        tile.classList.add('aac-word--tapped');
+        setTimeout(() => tile.classList.remove('aac-word--tapped'), 180);
+      });
+
+      grid.appendChild(tile);
+    });
+  };
+
+  const selectAACCategory = (categoryId) => {
+    aacState.activeCategoryId = categoryId;
+    renderAACCategoryTabs();
+    renderAACGrid();
+
+    const activeTab = document.querySelector(`.aac-cat-tab[data-aac-cat="${categoryId}"]`);
+    if (activeTab) {
+      activeTab.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  const renderAACSentence = () => {
+    const strip = document.getElementById('aac-sentence-strip');
+    const placeholder = document.getElementById('aac-sentence-placeholder');
+    if (!strip) return;
+
+    // Remove existing chips
+    strip.querySelectorAll('.aac-sentence__chip').forEach(c => c.remove());
+
+    if (aacState.sentence.length === 0) {
+      if (placeholder) placeholder.style.display = '';
+      return;
+    }
+
+    if (placeholder) placeholder.style.display = 'none';
+
+    aacState.sentence.forEach((entry, index) => {
+      const chip = document.createElement('button');
+      chip.className = 'aac-sentence__chip';
+      chip.setAttribute('role', 'listitem');
+      chip.setAttribute('aria-label', `Remove "${entry.word}" from sentence`);
+
+      const sym = document.createElement('span');
+      sym.className = 'aac-sentence__chip-symbol';
+      sym.setAttribute('aria-hidden', 'true');
+      sym.textContent = entry.symbol;
+
+      const txt = document.createElement('span');
+      txt.textContent = entry.word;
+
+      chip.appendChild(sym);
+      chip.appendChild(txt);
+
+      chip.addEventListener('click', () => {
+        aacState.sentence.splice(index, 1);
+        renderAACSentence();
+      });
+
+      strip.appendChild(chip);
+    });
+  };
+
+  const getAACSentenceText = () =>
+    aacState.sentence.map(e => e.word).join(' ');
 
   // =============================================
   // Settings persistence via URL
@@ -744,6 +886,49 @@
     document.querySelectorAll('[data-action="open-builder"]').forEach(btn => {
       btn.addEventListener('click', () => setView('builder'));
     });
+
+    // Kids Core Words (AAC) button
+    document.querySelectorAll('[data-action="open-aac"]').forEach(btn => {
+      btn.addEventListener('click', () => setView('aac'));
+    });
+
+    // AAC: initial render
+    renderAACCategoryTabs();
+    renderAACGrid();
+    renderAACSentence();
+
+    // AAC: back button
+    const aacBack = document.getElementById('aac-back');
+    if (aacBack) {
+      aacBack.addEventListener('click', () => setView('phrases'));
+    }
+
+    // AAC: speak sentence
+    const aacSpeak = document.getElementById('aac-sentence-speak');
+    if (aacSpeak) {
+      aacSpeak.addEventListener('click', () => {
+        const text = getAACSentenceText().trim();
+        if (text) Voice.speak(text);
+      });
+    }
+
+    // AAC: undo last word
+    const aacBackspace = document.getElementById('aac-sentence-backspace');
+    if (aacBackspace) {
+      aacBackspace.addEventListener('click', () => {
+        aacState.sentence.pop();
+        renderAACSentence();
+      });
+    }
+
+    // AAC: clear sentence
+    const aacClear = document.getElementById('aac-sentence-clear');
+    if (aacClear) {
+      aacClear.addEventListener('click', () => {
+        aacState.sentence = [];
+        renderAACSentence();
+      });
+    }
 
     // Back from builder
     const backBtn = document.getElementById('builder-back');
